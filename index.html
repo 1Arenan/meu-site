@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verdadeiro ou falso</title>
+    <title>Quiz dos Pinguins</title>
     <style>
         /* Estilos do site (CSS) */
         body {
@@ -40,7 +40,7 @@
 
         h2 {
             color: #006064;
-            font-size: 20px;
+            font-size: 18px;
             margin-top: 15px;
         }
 
@@ -83,7 +83,7 @@
         .resultado {
             margin-top: 20px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             min-height: 50px;
         }
 
@@ -94,13 +94,20 @@
             display: none;
             width: 100%;
         }
+        
+        .progresso {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
     <div class="card ativo" id="card1">
+        <div class="progresso">Pergunta 1 de 5</div>
         <img src="https://images.unsplash.com/photo-1598439210625-5067c578f3f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Pinguim na neve">
-        <h2>Pergunta 1: Pinguins vivem naturalmente no Polo Norte, junto com os ursos polares.</h2>
+        <h2>Pinguins vivem naturalmente no Polo Norte, junto com os ursos polares.</h2>
         
         <div class="botoes">
             <button class="btn-verdadeiro" onclick="responder(1, true)">Verdadeiro</button>
@@ -112,8 +119,9 @@
     </div>
 
     <div class="card" id="card2">
+        <div class="progresso">Pergunta 2 de 5</div>
         <img src="https://images.unsplash.com/photo-1551915995-17796d8b9d99?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Pinguins na praia">
-        <h2>Pergunta 2: Nem todos os pinguins vivem no gelo, algumas espécies vivem em praias de clima quente.</h2>
+        <h2>Nem todos os pinguins vivem no gelo, algumas espécies vivem em praias de clima quente.</h2>
         
         <div class="botoes">
             <button class="btn-verdadeiro" onclick="responder(2, true)">Verdadeiro</button>
@@ -121,19 +129,73 @@
         </div>
 
         <div class="resultado" id="resultado2"></div>
-        <button class="btn-proximo" id="proximo2" onclick="recomecar()">Jogar Novamente ↺</button>
+        <button class="btn-proximo" id="proximo2" onclick="proximoCard(2)">Próxima Pergunta ➔</button>
+    </div>
+
+    <div class="card" id="card3">
+        <div class="progresso">Pergunta 3 de 5</div>
+        <img src="https://images.unsplash.com/photo-1598440801824-00a400c436da?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Pinguim nadando">
+        <h2>Apesar de terem asas, os pinguins não conseguem voar pelo ar.</h2>
+        
+        <div class="botoes">
+            <button class="btn-verdadeiro" onclick="responder(3, true)">Verdadeiro</button>
+            <button class="btn-falso" onclick="responder(3, false)">Falso</button>
+        </div>
+
+        <div class="resultado" id="resultado3"></div>
+        <button class="btn-proximo" id="proximo3" onclick="proximoCard(3)">Próxima Pergunta ➔</button>
+    </div>
+
+    <div class="card" id="card4">
+        <div class="progresso">Pergunta 4 de 5</div>
+        <img src="https://images.unsplash.com/photo-1629814696209-4f4fac2955f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Pinguim Imperador">
+        <h2>O Pinguim-Imperador é a menor espécie de pinguim do mundo.</h2>
+        
+        <div class="botoes">
+            <button class="btn-verdadeiro" onclick="responder(4, true)">Verdadeiro</button>
+            <button class="btn-falso" onclick="responder(4, false)">Falso</button>
+        </div>
+
+        <div class="resultado" id="resultado4"></div>
+        <button class="btn-proximo" id="proximo4" onclick="proximoCard(4)">Próxima Pergunta ➔</button>
+    </div>
+
+    <div class="card" id="card5">
+        <div class="progresso">Pergunta 5 de 5</div>
+        <img src="https://images.unsplash.com/photo-1599824637762-11116279f048?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Pinguins comendo">
+        <h2>A dieta dos pinguins é baseada apenas em algas marinhas e plantas.</h2>
+        
+        <div class="botoes">
+            <button class="btn-verdadeiro" onclick="responder(5, true)">Verdadeiro</button>
+            <button class="btn-falso" onclick="responder(5, false)">Falso</button>
+        </div>
+
+        <div class="resultado" id="resultado5"></div>
+        <button class="btn-proximo" id="proximo5" onclick="recomecar()">Jogar Novamente ↺</button>
     </div>
 
     <script>
         // Respostas corretas para as perguntas
         const respostasCorretas = {
             1: {
-                correta: false, // É falso, pois pinguins vivem no hemisfério sul (Antártida)
-                explicacao: "Os pinguins vivem no Hemisfério Sul, principalmente na Antártida. Ursos polares vivem no Polo Norte!"
+                correta: false,
+                explicacao: "Os pinguins vivem no Hemisfério Sul (Antártida, América do Sul, etc.). Ursos polares vivem no Polo Norte!"
             },
             2: {
-                correta: true, // É verdadeiro, existem pinguins na África do Sul, Galápagos, etc.
-                explicacao: "Espécies como o Pinguim-africano e o Pinguim-de-galápagos vivem em climas bem quentes!"
+                correta: true,
+                explicacao: "Espécies como o Pinguim-africano e o Pinguim-de-galápagos vivem em praias de climas bem quentes!"
+            },
+            3: {
+                correta: true,
+                explicacao: "Eles não voam no ar, mas suas asas funcionam como nadadeiras super potentes que fazem eles 'voarem' debaixo d'água."
+            },
+            4: {
+                correta: false,
+                explicacao: "É falso! O Pinguim-Imperador é a **maior** espécie do mundo, podendo chegar a 1,20m de altura. O menor é o Pinguim-azul."
+            },
+            5: {
+                correta: false,
+                explicacao: "Pinguins são carnívoros! Eles se alimentam de peixes, lulas e krill (pequenos crustáceos)."
             }
         };
 
@@ -142,7 +204,7 @@
             const divResultado = document.getElementById("resultado" + numeroCard);
             const btnProximo = document.getElementById("proximo" + numeroCard);
             
-            // Desabilita os botões de verdadeiro/falso do card atual
+            // Desabilita os botões do card atual
             const botoes = document.querySelectorAll("#card" + numeroCard + " .botoes button");
             botoes.forEach(botao => botao.disabled = true);
 
@@ -152,7 +214,7 @@
                 divResultado.innerHTML = "🎉 Você acertou!<br><br>" + dadosResposta.explicacao;
             } else {
                 divResultado.style.color = "red";
-                divResultado.innerHTML = "❌ Você errou!<br><br>A resposta certa era " + (dadosResposta.correta ? "Verdadeiro" : "Falso") + ".<br>" + dadosResposta.explicacao;
+                divResultado.innerHTML = "❌ Você errou!<br><br>A resposta certa era <strong>" + (dadosResposta.correta ? "Verdadeiro" : "Falso") + "</strong>.<br>" + dadosResposta.explicacao;
             }
 
             // Mostra o botão para ir para a próxima etapa
