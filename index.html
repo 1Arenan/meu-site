@@ -1,38 +1,176 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-   <meta charser="UTF-8">
-    <meta name="viewport" content="with=erive=width, initial-scale=1.0">
-    <title>Document</title>
-  </head>
-  <body>
-    <header>
-      <h1>verdade ou não?</h1>
-      <nav>
-        <a href="#">Inicio</a>
-      </nav>
-    </header>
-    <main>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz dos Pinguins</title>
+    <style>
+        /* Estilos do site (CSS) */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-  <h2>Descubra a verdade passando o mouse</h2> 
-  <section> 
-    <article> 
-      <div> 
-        <div> 
-          <img src="https://static.nationalgeographicbrasil.com/files/styles/image_3200/public/mm1012723121410486.jpg?w=1900&h=2849" alt="Pinguim" class="cartao-imagem"> 
-          <p>Pinguins conseguem voar como pássaros!</p> 
-        </div> 
-        <div class="cartao-verso"> 
-          <img src="https://static.nationalgeographicbrasil.com/files/styles/image_3200/public/mm1012723121410486.jpg?w=1900&h=2849" alt="Pinguim" class="cartao-imagem"> 
-          <p>Pinguins não voam, mas são excelentes nadadores.</p> 
-        </div> 
-      </div> 
-      </article>
-    </main>
-    <footer>
-      <p>Projto feito por aluno</p>
-    </footer>
-  </body>
-  <html>
-  </section> 
-</main> 
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            padding: 20px;
+            text-align: center;
+            display: none; /* Esconde os cards inicialmente */
+        }
+
+        /* Mostra o card ativo */
+        .card.ativo {
+            display: block;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #006064;
+            font-size: 20px;
+            margin-top: 15px;
+        }
+
+        .botoes {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-verdadeiro {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-falso {
+            background-color: #f44336;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 1;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            min-height: 50px;
+        }
+
+        .btn-proximo {
+            background-color: #008CBA;
+            color: white;
+            margin-top: 15px;
+            display: none;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card ativo" id="card1">
+        <img src="https://images.unsplash.com/photo-1598439210625-5067c578f3f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Pinguim na neve">
+        <h2>Pergunta 1: Pinguins vivem naturalmente no Polo Norte, junto com os ursos polares.</h2>
+        
+        <div class="botoes">
+            <button class="btn-verdadeiro" onclick="responder(1, true)">Verdadeiro</button>
+            <button class="btn-falso" onclick="responder(1, false)">Falso</button>
+        </div>
+
+        <div class="resultado" id="resultado1"></div>
+        <button class="btn-proximo" id="proximo1" onclick="proximoCard(1)">Próxima Pergunta ➔</button>
+    </div>
+
+    <div class="card" id="card2">
+        <img src="https://images.unsplash.com/photo-1551915995-17796d8b9d99?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Pinguins na praia">
+        <h2>Pergunta 2: Nem todos os pinguins vivem no gelo, algumas espécies vivem em praias de clima quente.</h2>
+        
+        <div class="botoes">
+            <button class="btn-verdadeiro" onclick="responder(2, true)">Verdadeiro</button>
+            <button class="btn-falso" onclick="responder(2, false)">Falso</button>
+        </div>
+
+        <div class="resultado" id="resultado2"></div>
+        <button class="btn-proximo" id="proximo2" onclick="recomecar()">Jogar Novamente ↺</button>
+    </div>
+
+    <script>
+        // Respostas corretas para as perguntas
+        const respostasCorretas = {
+            1: {
+                correta: false, // É falso, pois pinguins vivem no hemisfério sul (Antártida)
+                explicacao: "Os pinguins vivem no Hemisfério Sul, principalmente na Antártida. Ursos polares vivem no Polo Norte!"
+            },
+            2: {
+                correta: true, // É verdadeiro, existem pinguins na África do Sul, Galápagos, etc.
+                explicacao: "Espécies como o Pinguim-africano e o Pinguim-de-galápagos vivem em climas bem quentes!"
+            }
+        };
+
+        function responder(numeroCard, respostaEscolhida) {
+            const dadosResposta = respostasCorretas[numeroCard];
+            const divResultado = document.getElementById("resultado" + numeroCard);
+            const btnProximo = document.getElementById("proximo" + numeroCard);
+            
+            // Desabilita os botões de verdadeiro/falso do card atual
+            const botoes = document.querySelectorAll("#card" + numeroCard + " .botoes button");
+            botoes.forEach(botao => botao.disabled = true);
+
+            // Verifica se acertou ou errou
+            if (respostaEscolhida === dadosResposta.correta) {
+                divResultado.style.color = "green";
+                divResultado.innerHTML = "🎉 Você acertou!<br><br>" + dadosResposta.explicacao;
+            } else {
+                divResultado.style.color = "red";
+                divResultado.innerHTML = "❌ Você errou!<br><br>A resposta certa era " + (dadosResposta.correta ? "Verdadeiro" : "Falso") + ".<br>" + dadosResposta.explicacao;
+            }
+
+            // Mostra o botão para ir para a próxima etapa
+            btnProximo.style.display = "block";
+        }
+
+        function proximoCard(cardAtual) {
+            // Esconde o card atual
+            document.getElementById("card" + cardAtual).classList.remove("ativo");
+            // Mostra o próximo card
+            document.getElementById("card" + (cardAtual + 1)).classList.add("ativo");
+        }
+
+        function recomecar() {
+            // Recarrega a página para começar o quiz do zero
+            location.reload();
+        }
+    </script>
+
+</body>
+</html>
